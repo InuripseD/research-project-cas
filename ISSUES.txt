@@ -1,0 +1,9 @@
+Global:
+- C++ could have been better for the use of OOP but I'm not confidente about my C++.
+- Java might have been more easy has the memory addressing is mainly managed automatically.
+
+Database:
+- A dynamic array seems far from suitable for removing an element (aka row) requires to re-address every row at the top of it. While taking a given size array is not scalable.
+- Single row's field modification currently not possible. A function is needed for each field.
+- Should I aim to store the data to make it consistente?
+- String seems for now to be an issue.
