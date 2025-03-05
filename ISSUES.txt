@@ -1,9 +1,30 @@
 Global:
 - C++ could have been better for the use of OOP but I'm not confidente about my C++.
-- Java might have been more easy has the memory addressing is mainly managed automatically.
+    : OOP not necessary, the way it is currently implemented is good.
+- Java might have been easier has the memory addressing is mainly managed automatically.
+    : C Is optimal as way closer to hardware and has less compiler optmization.
 
 Database:
-- A dynamic array seems far from suitable for removing an element (aka row) requires to re-address every row at the top of it. While taking a given size array is not scalable.
+- A dynamic array seems far from suitable as removing an element (aka row) requires to re-address every row at the top of it. While taking a given size array is not scalable.
+    : It is fine for now to define a limited size array and work with that.
 - Single row's field modification currently not possible. A function is needed for each field.
+    : It's ok.
 - Should I aim to store the data to make it consistente?
-- String seems for now to be an issue.
+    : No, only in RAM is good.
+- String seems for now to be an issue. (modifying only the pointer while assigning more memory might be a solution).
+    : Can be done later, for now work with what represent the problem.
+- What if two threads modify two fields of the datbase, can the row be mixed of both or not ?
+    : Considere both case later, for not just use COMPARE_EXCHANGE AS A LOCK.
+
+Tests:
+- I forgot that barrieres aren't implemented in C which made things slightly harder.
+    : It's fine, not hard to implement + copy past.
+- It is essential to be sure we work on a good base.
+
+Benchmark:
+- I planned to take as a basis the tests written by Peter Sestoft.
+    : It will not necessarily be obligated to use it as we don't use java but at least run multiple times.  (At 10 time, see reference paper again for more information)
+- One metric is ready to be used is the number of try before a compare and swap succeed.
+    : It might slightly impact performance, should be ok. Do not concidere doing it with locks. Would requires to code a schreduler.
+- Writting the expected outcome of running the tests.
+    : Scientific way: Hypotesis, tests and comparaison, results.
