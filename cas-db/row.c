@@ -74,5 +74,5 @@ bool delete_row(Row* row, bool *delete){
 }
 
 void print_row(Row* row){
-    printf("%-5d %-20c %-10ld %-5d\n", atomic_load(row->id), atomic_load(row->char_value), atomic_load(row->long_value), atomic_load(row->is_deleted));
+    printf("%-5d %-20c %-20ld %-5d\n", atomic_load(row->id), atomic_load(row->char_value), atomic_load(row->long_value), atomic_load(row->is_deleted));
 }

@@ -106,7 +106,7 @@ int remove_row(Table* table, int id) {
 }
 
 void print_table(Table* table) {
-    printf("%-5s %-20s %-10s %-5s\n", "ID", "STR_VALUE", "LONG_VALUE", "DELETED");
+    printf("%-5s %-20s %-20s %-5s\n", "ID", "CHAR_VALUE", "LONG_VALUE", "DELETED");
     for (int i = 0; i < atomic_load(table->row_count); i++) {
         print_row(table->rows[i]);
     }
