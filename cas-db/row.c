@@ -15,9 +15,9 @@
  * So it already is a unique row by default.
  * This way we can use atomic_store here for initialisation.
  * 
- * C atomic library take addresses as arguments to mofiify the value at this address.
- * So it was easier to use pointers for atomic valuers.abort
- * However it make declaration and initialisation a bit more complex.
+ * C atomic library take addresses as arguments to mofify the value at this address.
+ * So it was easier to use pointers for atomic values.
+ * However it make declaration and initialisation slightly more complex.
  */
 Row* create_row(int id, char char_value, long long_value){
     // Allocate memory for the row.
@@ -38,20 +38,13 @@ Row* create_row(int id, char char_value, long long_value){
         return NULL;
     }
 
-    // Finally give valuers tot the fields of the row.
-    atomic_store(row->id, id);
-    atomic_store(row->char_value, char_value);
-    atomic_store(row->long_value, long_value);
-    atomic_store(row->is_deleted, false);
+    // Finally give values to the fields of the row.
+    atomic_init(row->id, id);
+    atomic_init(row->char_value, char_value);
+    atomic_init(row->long_value, long_value);
+    atomic_init(row->is_deleted, false);
     return row; // Return the address of the row.
 }
-
-// TODO: Check if it works properly (Not each charactere is atomic but the entier string is).
-// int update_str_value(Row* row, const char *new_str_value){
-//     // return atomic_compare_exchange_strong(&(row->str_value), new_str_value, memory_order_relaxed);
-//     return 0;
-// }
-
 
 /*
  * This simply performs a compare and swap on the char value of the row.
