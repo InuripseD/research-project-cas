@@ -22,9 +22,6 @@ int new_id(Table* table) {
     return atomic_fetch_add(table->row_count, 1); // Get previous value and increment.
 }
 
-/*
- * Usefull as it is often needed to call the last id being used.
- */
 int get_id(Table* table) {
     return atomic_load(table->row_count);
 }
@@ -42,10 +39,8 @@ Row* find_row(Table* table, int id) {
     return NULL;
 }
 
-/*
- * The id of the row will be unique as we use atomic fetch and incrementation.
- */
 int add_row(Table* table, char char_value, long long_value) {
+    // The id of the row will be unique as we use atomic fetch and incrementation.
     int id = new_id(table);
 
     Row *row = create_row(id, char_value, long_value);
@@ -57,23 +52,29 @@ int add_row(Table* table, char char_value, long long_value) {
 int update_row(Table* table, int id, char new_char_value, long new_long_value) {
     Row *row = find_row(table, id);
     if (row == NULL) {
+        perror("Row id not found");
         return -1;
     }
 
+    if (row->is_deleted) {
+        return 0;
+    }
+
+    // To ensure isolation of the update a new field on the row might be added. To work like a lock.
+    //  _Atomic struct vars { char *c; long *l; } v = { row->char_value, row->long_value };  // This will not work.
+
     int i = 0;
 
-    // In case we con't update the char we pass '\0'. 
+    // In case we won't update the char we pass '\0'. 
     if (new_char_value != '\0') {
 
         // FROM HERE 
         char old = atomic_load(row->char_value);
         while(!update_char_value(row, &old, new_char_value)){
-            i++;
+            i++; //Interferes with running time.
         }
         // TILL HERE
         // This is an atomic modification of the char value of the row. We try CAS (aka here compare exchange) until it works.
-        // Might need a function as it might be used in other places later.
-        
     }
 
     // Same here with -1.
@@ -87,19 +88,17 @@ int update_row(Table* table, int id, char new_char_value, long new_long_value) {
     return i;
 }
 
-/*
- * Here for now, nothing ensusre that rows are sorted by id.
- * So we have to check every row to find the one to update.
- */
 int remove_row(Table* table, int id) {
-    Row *row = find_row(table, id);
-    if (row == NULL) {
+    Row *row = find_row(table, id); // Find the row with the given id.
+    if (row == NULL) { 
         perror("Row not found");
         return -1;
     }
+    
+    // Perform atomic deletion of the row and return the number of try to delete it.
     int i = 0;
     bool delete = false;
-    while(!delete_row(row, &delete)){
+    while(!delete_row(row, &delete) || /* It can stop if the row was already deleted.*/ !delete){
         i++;
     }
     return i;

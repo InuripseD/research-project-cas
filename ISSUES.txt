@@ -15,6 +15,7 @@ Database:
     : Can be done later, for now work with what represent the problem.
 - What if two threads modify two fields of the datbase, can the row be mixed of both or not ?
     : Considere both case later, for not just use COMPARE_EXCHANGE AS A LOCK.
+- Looking for a solution to make "update_row" in isolation. Would like two mode, mix and atomic.
 
 Tests:
 - I forgot that barrieres aren't implemented in C which made things slightly harder.
