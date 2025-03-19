@@ -1,6 +1,9 @@
-.PHONY: all clean cas-db tests server benchmarks
+.PHONY: all clean cas-db tests benchmarks
 
-all: cas-db tests server benchmarks
+all: create_dirs cas-db tests benchmarks
+
+create_dirs:
+	mkdir -p obj bin
 
 cas-db:
 	$(MAKE) -C cas-db
@@ -8,14 +11,13 @@ cas-db:
 tests:
 	$(MAKE) -C tests
 
-server:
-	$(MAKE) -C server
-
 benchmarks:
 	$(MAKE) -C benchmarks
+
+# server:
+# 	$(MAKE) -C server
 
 clean:
 	$(MAKE) -C cas-db clean
 	$(MAKE) -C tests clean
-	$(MAKE) -C server clean
 	$(MAKE) -C benchmarks clean

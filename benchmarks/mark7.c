@@ -40,6 +40,7 @@ double mark7(char *msg, double (*function)(int)) {
 		}
 	} while (running_time < 250000000 && count < INT_MAX/2);
 	double mean = st / n; 
+	// Require -lm flag to compile despite including math.h
 	double sdev = sqrt((sst - mean * mean * n) / (n - 1));
 	printf("%-25s %9.1lf ns %9.2lf %10d\n", msg, mean, sdev, count);
 	return dummy / total_count;

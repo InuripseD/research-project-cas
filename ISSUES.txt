@@ -3,6 +3,8 @@ Global:
     : OOP not necessary, the way it is currently implemented is good.
 - Java might have been easier has the memory addressing is mainly managed automatically.
     : C Is optimal as way closer to hardware and has less compiler optmization.
+- <pthread.h>: learn more about this, (schreduler?, waking up?), how thread also works in C. Write about this. (1 page max)
+    : WRITE ABOUT this.
 
 Database:
 - A dynamic array seems far from suitable as removing an element (aka row) requires to re-address every row at the top of it. While taking a given size array is not scalable.
@@ -16,11 +18,13 @@ Database:
 - What if two threads modify two fields of the datbase, can the row be mixed of both or not ?
     : Considere both case later, for not just use COMPARE_EXCHANGE AS A LOCK.
 - Looking for a solution to make "update_row" in isolation. Would like two mode, mix and atomic.
+    : Updating one field at a time for now and multiple later.
 
 Tests:
 - I forgot that barrieres aren't implemented in C which made things slightly harder.
     : It's fine, not hard to implement + copy past.
 - It is essential to be sure we work on a good base.
+    : WORK IN PROGRESS, not the best part of the project so slowly doing it.
 
 Benchmark:
 - I planned to take as a basis the tests written by Peter Sestoft.
@@ -29,3 +33,8 @@ Benchmark:
     : It might slightly impact performance, should be ok. Do not concidere doing it with locks. Would requires to code a schreduler.
 - Writting the expected outcome of running the tests.
     : Scientific way: Hypotesis, tests and comparaison, results.
+- C clock_t is only on microsecond (not preceise enough)
+    : Had some research and found timespec and clock_gettime() (for linux system only, it is the most accurate). Try to understand and implement a timer based on this.
+- Cache differences
+- Calculate how mush times it take to modify one row when multiple threads try to modify it.
+    : WORK IN PROGRESS, adapting the mark7 function is a good idea to benchmark this.
