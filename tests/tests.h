@@ -19,19 +19,19 @@ typedef struct {
     ReusableBarrier* barrier;
     Table* table;
     int information_1; // Additionnal information.
-    int information_2; // Additionnal information 2 in case multiple is needed.
+    void* information_2; // Additionnal information 2 in case multiple is needed.
 } GlobalParams;
 
 /**
  * @brief Structure to pass personnal parameters to the threads.
  * 
  * @details The attributes contained in a `ThreadParams` are:
- * - **threadId**: The id of the thread.
+ * - **thread_id**: The id of the thread.
  * - **globalParams**: A pointer to the global parameters.
  */
 typedef struct {
-	int threadId;
-    GlobalParams* globalParams;
+	int thread_id;
+    GlobalParams* global_params;
 } ThreadParams;
 
 /** 
@@ -39,7 +39,7 @@ typedef struct {
  * 
  * @details This function is called by each thread to add rows to the table.
  *          First the threads will wait until all threads are ready to start adding rows.
- *          Then rows added by each thread will have the threadId as char_value and pthread_self() as long_value.
+ *          Then rows added by each thread will have the thread_id as char_value and pthread_self() as long_value.
  */
 void * thread_computation_add_row (void * params);
 
@@ -52,7 +52,7 @@ void * thread_computation_add_row (void * params);
  * 
  * @return true if the test passed, false otherwise.
  */
-bool test_add_row(Table* table, int threadsNumber, ReusableBarrier* barrier);
+bool test_add_row(Table* table, int threads_number, ReusableBarrier* barrier);
 
 /** 
  * @brief Function is meant to be called by each thread to modify rows in the table.
@@ -70,7 +70,7 @@ void * thread_computation_modify_row (void * params);
  *          The function will then check that all rows have been modified correctly.
  *          Checking that each row has char_value == long_value.
  */
-bool test_modify_row(Table* table, int threadsNumber, ReusableBarrier* barrier);
+bool test_modify_row(Table* table, int threads_number, ReusableBarrier* barrier);
 
 // TODO: Add more tests for delete_row.
 

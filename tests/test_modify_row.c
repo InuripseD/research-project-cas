@@ -14,7 +14,7 @@ void * thread_computation_modify_row (void * params){
 	
 	ThreadParams* args = (ThreadParams *) params;
 
-    GlobalParams* predicat = args -> globalParams;
+    GlobalParams* predicat = args -> global_params;
 
     Table* table = predicat->table;
 
@@ -23,43 +23,43 @@ void * thread_computation_modify_row (void * params){
     
     // Update the row multiple times.
     for (int i = 0; i < MODIFICATION_PER_THREAD; i++){
-        update_row(table, predicat->information_1, '0'+ args->threadId, args->threadId);
+        update_row(table, predicat->information_1, '0'+ args->thread_id, args->thread_id);
     }
 
 	pthread_exit(EXIT_SUCCESS);
 }
 
 
-bool test_modify_row(Table* table, int threadsNumber, ReusableBarrier* barrier){
+bool test_modify_row(Table* table, int threads_number, ReusableBarrier* barrier){
 
     // Creating the threads.
-	pthread_t threads[threadsNumber];
+	pthread_t threads[threads_number];
 
     // Creating the global parameters for the threads.
-    GlobalParams* globalParams = malloc(sizeof(GlobalParams));
+    GlobalParams* global_params = malloc(sizeof(GlobalParams));
 
-    globalParams->table = table;
-    globalParams->barrier = barrier;
+    global_params->table = table;
+    global_params->barrier = barrier;
 
     // Creating the threads parameters.
-    ThreadParams threadParams[threadsNumber];
+    ThreadParams thread_params[threads_number];
 
     for (int k = 0; k < ROWS_NUMBER; k++){
         add_row(table, 'N', -1);
-        globalParams->information_1 = k;
+        global_params->information_1 = k;
         // Launching the threads.
-        for (int i = 0; i < threadsNumber; i++){
-            threadParams[i].threadId = i;
-            threadParams[i].globalParams = globalParams;
+        for (int i = 0; i < threads_number; i++){
+            thread_params[i].thread_id = i;
+            thread_params[i].global_params = global_params;
 
-            if (pthread_create(&threads[i], NULL, thread_computation_modify_row, &threadParams[i]) != 0){
+            if (pthread_create(&threads[i], NULL, thread_computation_modify_row, &thread_params[i]) != 0){
                 perror("error thread creation");
                 exit(1);
             }	
         }
 
         // Joining the threads.
-        for (int i = 0; i < threadsNumber; i++){
+        for (int i = 0; i < threads_number; i++){
             pthread_join(threads[i], NULL);
         }
     }
@@ -77,7 +77,7 @@ bool test_modify_row(Table* table, int threadsNumber, ReusableBarrier* barrier){
     }
 
     // Free memory
-    free(globalParams);
+    free(global_params);
 
 	return true;
 	

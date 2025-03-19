@@ -14,7 +14,7 @@ void * thread_computation_add_row (void * params){
     // Getting the parameters.
 	ThreadParams* args = (ThreadParams *) params;
 
-    GlobalParams* predicat = args -> globalParams;
+    GlobalParams* predicat = args -> global_params;
 
 	pthread_t self = pthread_self();
 
@@ -25,40 +25,40 @@ void * thread_computation_add_row (void * params){
     
     // Adding rows to the table. 
     for (int i = 0; i < ROWS_PER_THREAD; i++){
-        add_row(table, '0'+ args->threadId, self);
+        add_row(table, '0'+ args->thread_id, self);
     }
 
 	pthread_exit(EXIT_SUCCESS);
 }
 
 
-bool test_add_row(Table* table, int threadsNumber, ReusableBarrier* barrier){
+bool test_add_row(Table* table, int threads_number, ReusableBarrier* barrier){
 
     // Creating the threads.
-	pthread_t threads[threadsNumber];
+	pthread_t threads[threads_number];
 
     // Creating the global parameters for the threads.
-    GlobalParams* globalParams = malloc(sizeof(GlobalParams));
+    GlobalParams* global_params = malloc(sizeof(GlobalParams));
 
-    globalParams->table = table;
-    globalParams->barrier = barrier;
+    global_params->table = table;
+    global_params->barrier = barrier;
 
     // Creating the threads parameters.
-    ThreadParams threadParams[threadsNumber];
+    ThreadParams thread_params[threads_number];
 
     // Launching the threads.
-	for (int i = 0; i < threadsNumber; i++){
-		threadParams[i].threadId = i;
-        threadParams[i].globalParams = globalParams;
+	for (int i = 0; i < threads_number; i++){
+		thread_params[i].thread_id = i;
+        thread_params[i].global_params = global_params;
 
-		if (pthread_create(&threads[i], NULL, thread_computation_add_row, &threadParams[i]) != 0){
+		if (pthread_create(&threads[i], NULL, thread_computation_add_row, &thread_params[i]) != 0){
 			perror("error thread creation");
 			exit(1);
         }	
 	}
 
     // Joining the threads.
-    for (int i = 0; i < threadsNumber; i++){
+    for (int i = 0; i < threads_number; i++){
 		pthread_join(threads[i], NULL);
 	}
     
@@ -67,14 +67,14 @@ bool test_add_row(Table* table, int threadsNumber, ReusableBarrier* barrier){
     // TODO: Complete with more verifications.
 
     // Check that the number of rows is correct.
-    if (get_row_count(table) != threadsNumber*ROWS_PER_THREAD){
+    if (get_row_count(table) != threads_number*ROWS_PER_THREAD){
         printf("Error: the number of rows is not correct\n");
         return false;
     }
 
     // Check that all ids are different.
-    for (int i = 0; i < threadsNumber*ROWS_PER_THREAD; i++){
-        for (int j = i+1; j < threadsNumber*ROWS_PER_THREAD; j++){
+    for (int i = 0; i < threads_number*ROWS_PER_THREAD; i++){
+        for (int j = i+1; j < threads_number*ROWS_PER_THREAD; j++){
             if (atomic_load((table->rows[i])->id) == atomic_load((table->rows[j])->id)){
                 printf("Error: id %d is not unique\n", atomic_load((table->rows[i])->id));
                 return false;
@@ -83,7 +83,7 @@ bool test_add_row(Table* table, int threadsNumber, ReusableBarrier* barrier){
     }
 
     // Free memory
-    free(globalParams);
+    free(global_params);
 
 	return true;
 }
