@@ -3,6 +3,11 @@
 
 #include <pthread.h>
 
+/**
+ * Nothing much to say here, this the most simple implementation of a barrier.
+ * With a twist that the last thread to reach the barrier will reset it.
+ * So it can be reused.
+ */
 typedef struct {
     int count;
     int capacity;
