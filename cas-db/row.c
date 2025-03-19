@@ -1,4 +1,3 @@
-#include <string.h>
 #include <stdatomic.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,20 +5,20 @@
 
 #include "row.h"
 
-// https://en.cppreference.com/w/c/atomic/atomic_store Could use "_explicit" on atomic funcitons to more specific memory access orders.
-// "memory_order_relaxed" is a memory order access type. See next link for more access types.
-// https://gcc.gnu.org/onlinedocs/gcc/_005f_005fatomic-Builtins.html
-
-/*
- * When creating a new row the id is already decided for this row. 
- * So it already is a unique row by default.
- * This way we can use atomic_store here for initialisation.
+/** @brief Functions to create, update, delete, and destroy rows.
+ *
+ * Except for the `create_row` function, all functions perform atomic operations 
+ * on the fields of a `Row`. 
  * 
- * C atomic library take addresses as arguments to mofify the value at this address.
- * So it was easier to use pointers for atomic values.
- * However it make declaration and initialisation slightly more complex.
+ * @attention The operations aren't performed in a transactional way by default.
+ *           The `isolation` field is used to manage row isolation. Setting it to 0
+ *          allows mixed operations on the row. All these functions should be used 
+ *         by the Table encapsulated by `row_lock_if` and `row_unlock_if` to ensure isolation.
+ * 
+ * @see row.h
  */
-Row* create_row(int id, char char_value, long long_value){
+
+Row* create_row(int id, char char_value, long long_value, short isolation){
     // Allocate memory for the row.
     Row* row = malloc(sizeof(Row));
     if(!row){
@@ -32,9 +31,10 @@ Row* create_row(int id, char char_value, long long_value){
     row->char_value = malloc(sizeof(atomic_char));
     row->long_value = malloc(sizeof(atomic_long));
     row->is_deleted = malloc(sizeof(atomic_bool));
+    row->isolation = malloc(sizeof(atomic_int));
 
-    if(!row->id || !row->char_value || !row->long_value || !row->is_deleted){
-        perror("Row memory not allocated");
+    if(!row->id || !row->char_value || !row->long_value || !row->is_deleted || !row->isolation){
+        perror("Fields memory not allocated");
         return NULL;
     }
 
@@ -43,29 +43,81 @@ Row* create_row(int id, char char_value, long long_value){
     atomic_init(row->char_value, char_value);
     atomic_init(row->long_value, long_value);
     atomic_init(row->is_deleted, false);
+    atomic_init(row->isolation, isolation);
+
     return row; // Return the address of the row.
 }
 
-/*
- * This simply performs a compare and swap on the char value of the row.
- * It returns true if the new value is set, otherwise it return false and
- * the old_char_value is updated with the current value of the char_value of the row.
- */
-bool update_char_value(Row* row, char *old_char_value, char new_char_value){
-    return atomic_compare_exchange_weak(row->char_value, old_char_value, new_char_value);
+int update_char_value(Row* row, char new_char_value){
+    if (row == NULL || row->char_value == NULL) {
+        perror("Row can't be modified because doesn't exists.");
+        return -1;
+    }
+    int i = 0;
+    char old = atomic_load(row->char_value);
+    while(!atomic_compare_exchange_weak(row->char_value, &old, new_char_value)){
+        i++; // TODO : Interferes with running time. See if another solution is possible.
+    }
+    return i;
 }
 
-bool update_long_value(Row* row, long *old_long_value, long new_long_value){
-    return atomic_compare_exchange_weak(row->long_value, old_long_value, new_long_value);
+int update_long_value(Row* row, long new_long_value){
+    if (row == NULL || row->long_value == NULL) {
+        perror("Row can't be modified because doesn't exists.");
+        return -1;
+    }
+    int i = 0;
+    long old = atomic_load(row->long_value);
+    while(!atomic_compare_exchange_weak(row->long_value, &old, new_long_value)){
+        i++;
+    }
+    return i;
 }
 
-/* It is still intersting to return if it works or not as it uses weak compare exchange.
- * So it can fail even when is_delete==delete. https://en.cppreference.com/w/c/atomic/atomic_compare_exchange
- */
-bool delete_row(Row* row, bool *delete){
-    return atomic_compare_exchange_weak(row->is_deleted, delete, true);
+int delete_row(Row* row){
+    if (row == NULL || row->char_value == NULL) {
+        perror("Row can't be deleted because doesn't exists.");
+        return -1;
+    }
+    int i = 0;
+    bool old = atomic_load(row->is_deleted);
+    while(!atomic_compare_exchange_weak(row->is_deleted, &old, true)){
+        i++;
+    }
+    return i;
+}
+
+void destroy_row(Row* row){
+    free(row->id);
+    free(row->char_value);
+    free(row->long_value);
+    free(row->is_deleted);
+    free(row->isolation);
+    free(row);
 }
 
 void print_row(Row* row){
     printf("%-5d %-20c %-20ld %-5d\n", atomic_load(row->id), atomic_load(row->char_value), atomic_load(row->long_value), atomic_load(row->is_deleted));
+}
+
+void row_lock_if(Row* row){
+    short iso = atomic_load(row->isolation);
+    if (iso == 0){
+        return;
+    }
+    iso = 1;
+    while (!atomic_compare_exchange_weak(row->isolation, &iso, 2)) {
+        iso = 1;
+    }   
+}
+
+void row_unlock_if(Row* row){
+    short iso = atomic_load(row->isolation);
+    if (iso == 0){
+        return;
+    }
+    iso = 2;
+    while (!atomic_compare_exchange_weak(row->isolation, &iso, 1)) {
+        iso = 2; // Should not be needed has it supposed to already be 2.
+    }
 }
