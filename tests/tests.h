@@ -20,7 +20,7 @@ typedef struct {
     Table* table;
     int information_1; // Additionnal information.
     void* information_2; // Additionnal information 2 in case multiple is needed.
-} GlobalParams;
+} GlobalParamsTest;
 
 /**
  * @brief Structure to pass personnal parameters to the threads.
@@ -31,8 +31,8 @@ typedef struct {
  */
 typedef struct {
 	int thread_id;
-    GlobalParams* global_params;
-} ThreadParams;
+    GlobalParamsTest* global_params;
+} ThreadParamsTest;
 
 /** 
  * @brief Function is meant to be called by each thread to add rows to the table.

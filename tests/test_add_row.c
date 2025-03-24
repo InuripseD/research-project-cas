@@ -12,9 +12,9 @@
 void * thread_computation_add_row (void * params){
 	
     // Getting the parameters.
-	ThreadParams* args = (ThreadParams *) params;
+	ThreadParamsTest* args = (ThreadParamsTest *) params;
 
-    GlobalParams* predicat = args -> global_params;
+    GlobalParamsTest* predicat = args -> global_params;
 
 	pthread_t self = pthread_self();
 
@@ -38,13 +38,13 @@ bool test_add_row(Table* table, int threads_number, ReusableBarrier* barrier){
 	pthread_t threads[threads_number];
 
     // Creating the global parameters for the threads.
-    GlobalParams* global_params = malloc(sizeof(GlobalParams));
+    GlobalParamsTest* global_params = malloc(sizeof(GlobalParamsTest));
 
     global_params->table = table;
     global_params->barrier = barrier;
 
     // Creating the threads parameters.
-    ThreadParams thread_params[threads_number];
+    ThreadParamsTest thread_params[threads_number];
 
     // Launching the threads.
 	for (int i = 0; i < threads_number; i++){
