@@ -4,8 +4,10 @@
 #include <math.h>
 
 #include "timer.h"
+#include "benchmark_classic.h"
+#include "../cas-db/table.h"
 
-double mark7(char *msg, double (*function)(int)) {
+double mark7(char *msg, PassedFunctionMark7* passed_function) {
 
 	// n can also be 8 based on the reference paper of this project.
 	int n = 10; 
@@ -23,6 +25,9 @@ double mark7(char *msg, double (*function)(int)) {
 	// For the mean and standard deviation.
 	double st = 0.0, sst = 0.0; 
 
+	double (*function)(int) = passed_function->function;
+    int int_value = passed_function->int_value;
+
 	do { 
 		count *= 2;
 		st = sst = 0.0;
@@ -30,8 +35,9 @@ double mark7(char *msg, double (*function)(int)) {
 			Timer timer;
 			play(&timer); // Start timer here.
 			for (int i=0; i<count; i++) {
-				dummy += (*function)(count);
+				dummy += (*function)(int_value);
 			}
+			pause_timer(&timer);
 			running_time = check(&timer); // End timer here.
 			double time = (double)running_time / (double)count;
 			st += time; 
@@ -42,6 +48,6 @@ double mark7(char *msg, double (*function)(int)) {
 	double mean = st / n; 
 	// Require -lm flag to compile despite including math.h
 	double sdev = sqrt((sst - mean * mean * n) / (n - 1));
-	printf("%-25s %9.1lf ns %9.2lf %10d\n", msg, mean, sdev, count);
+	printf("%-40s %12.1lf ns %9.2lf %12d\n", msg, mean, sdev, count);
 	return dummy / total_count;
 }

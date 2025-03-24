@@ -20,4 +20,9 @@ long check(Timer *t);
  */
 void play(Timer *t);
 
+/** 
+ * @brief Pauses the timer. Store the time elapsed since the start.
+ */
+void pause_timer(Timer *t);
+
 #endif // TIMER_H
