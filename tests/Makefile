@@ -10,7 +10,7 @@ BIN = $(BIN_DIR)/tests
 
 all: $(BIN)
 
-$(BIN): $(OBJ) $(OBJ_DIR)/database.o $(OBJ_DIR)/table.o $(OBJ_DIR)/row.o
+$(BIN): $(OBJ) $(OBJ_DIR)/database.o $(OBJ_DIR)/table.o $(OBJ_DIR)/row.o $(OBJ_DIR)/timer.o
 	$(CC) $^ -o $@
 
 $(OBJ_DIR)/%.o: %.c

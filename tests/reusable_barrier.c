@@ -1,6 +1,8 @@
 #include <stdlib.h>
+#include <stdbool.h>
 
 #include "reusable_barrier.h"
+#include "../benchmarks/timer.h"
 
 ReusableBarrier* create_barrier(int capacity) {
     ReusableBarrier* barrier = malloc(sizeof(ReusableBarrier));
@@ -27,4 +29,18 @@ void destroy_barrier(ReusableBarrier* barrier) {
     pthread_mutex_destroy(&barrier->mutex);
     pthread_cond_destroy(&barrier->cond);
     free(barrier);
+}
+
+bool is_last_thread(ReusableBarrier* barrier, Timer *timer, bool start_or_end) {
+    pthread_mutex_lock(&barrier->mutex);
+    bool is_last = barrier->count == barrier->capacity - 1;
+    if(is_last){
+        if (start_or_end) {
+            play(timer);
+        } else {
+            pause_timer(timer);
+        }
+    }
+    pthread_mutex_unlock(&barrier->mutex);
+    return is_last;
 }

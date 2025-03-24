@@ -2,6 +2,10 @@
 #define BARRIER_H
 
 #include <pthread.h>
+#include <stdbool.h>
+
+#include "../benchmarks/timer.h"
+
 
 /**
  * Nothing much to say here, this the most simple implementation of a barrier.
@@ -20,5 +24,7 @@ ReusableBarrier* create_barrier(int capacity);
 void wait_barrier(ReusableBarrier* barrier);
 
 void destroy_barrier(ReusableBarrier* barrier);
+
+bool is_last_thread(ReusableBarrier* barrier, Timer *timer, bool start_or_end);
 
 #endif // BARRIER_H 
