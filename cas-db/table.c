@@ -66,7 +66,7 @@ int update_row(Table* table, int id, char new_char_value, long new_long_value) {
     return cas_try;
 }
 
-int update_row_char(Table* table, int id, char new_char_value) {
+unsigned long long int update_row_char(Table* table, int id, char new_char_value) {
     Row* row = find_row(table, id);
     if (row == NULL) {
         perror("Can't update row.");

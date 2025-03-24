@@ -70,7 +70,7 @@ Row* create_row(int id, char char_value, long long_value, short isolation);
  * 
  * @note This function is thread safe for `char` field only. (Entire row @see Table.h isolation)
  */
-int update_char_value(Row* row, char new_char_value);
+unsigned long long int update_char_value(Row* row, char new_char_value);
 
 /**
  * @brief Atomically updates the long value of a row.

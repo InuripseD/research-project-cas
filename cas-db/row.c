@@ -48,12 +48,12 @@ Row* create_row(int id, char char_value, long long_value, short isolation){
     return row; // Return the address of the row.
 }
 
-int update_char_value(Row* row, char new_char_value){
+unsigned long long int update_char_value(Row* row, char new_char_value){
     if (row == NULL || row->char_value == NULL) {
         perror("Row can't be modified because doesn't exists.");
         return -1;
     }
-    int i = 0;
+    unsigned long long int i = 0ULL;
     char old = atomic_load(row->char_value);
     while(!atomic_compare_exchange_weak(row->char_value, &old, new_char_value)){
         i++; // TODO : Interferes with running time. See if another solution is possible.

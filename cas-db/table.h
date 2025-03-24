@@ -132,7 +132,7 @@ int update_row(Table* table, int id, char new_char_value, long new_long_value);
  * 
  * @return The number of CAS operation tried before update, or -1 if an error occurred.
  */
-int update_row_char(Table* table, int id, char new_char_value);
+unsigned long long int update_row_char(Table* table, int id, char new_char_value);
 
 /**
  * @brief Update the long value of a row in the table.
