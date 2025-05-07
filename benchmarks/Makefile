@@ -3,7 +3,7 @@ CFLAGS = -Wall -g
 OBJ_DIR = ../obj
 BIN_DIR = ../bin
 
-SRC = benchmark_main.c timer.c update_row_benchmark_classic.c mark7.c mark7_adapted.c up_row_ben_adapt.c
+SRC = benchmark_main.c timer.c update_row_benchmark_classic.c mark7.c mark7_adapted.c up_row_ben_adapt.c simple_increment_benchmark.c generic_thread_mark7.c
 OBJ = $(patsubst %.c, $(OBJ_DIR)/%.o, $(SRC))
 
 BIN = $(BIN_DIR)/benchmarks

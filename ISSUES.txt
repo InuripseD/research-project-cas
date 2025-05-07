@@ -5,6 +5,8 @@ Global:
     : C Is optimal as way closer to hardware and has less compiler optmization.
 - <pthread.h>: learn more about this, (schreduler?, waking up?), how thread also works in C. Write about this. (1 page max)
     : WRITE ABOUT this.
+- All CPU are being used. Probably some libraries used are multitreaded ? is itjust the switch between CPU making it undistinguisable ?
+    : It is not the case, it it because many threads are created even when using one so it is not visible on the graph because it is too fast.
 
 Database:
 - A dynamic array seems far from suitable as removing an element (aka row) requires to re-address every row at the top of it. While taking a given size array is not scalable.
@@ -38,3 +40,33 @@ Benchmark:
 - Cache differences
 - Calculate how mush times it take to modify one row when multiple threads try to modify it.
     : WORK IN PROGRESS, adapting the mark7 function is a good idea to benchmark this.
+- Number of retries increases EXPONENTIAL!!! At least it seems to. Tried to check if it was possible and barely seem to /:
+    : Some settings might have made it overflow by it was simply an addressing mistake in the end.
+- More Benchmark: -Response time (time it takes to execute a query when the system is being used)
+                  -Time to perform other actions on the database.
+                  -Compare against locks ?
+                  -How it performs under server settings,
+- Check with same threads instead of recreating them.
+- It will be longer as many threads are trying in the same time then many retire
+   same for the reries.
+
+- Try compare lock vs atomic.
+- writte more about the tests and results;
+- Timer reajustement ?
+
+- Peter Sestoft benchmark function translated and adapted for multitreaded benchmark.
+    :important
+- lock assembly instruction. investiguation
+    :Write and document about the fetch_and_add. (assembly part too). 
+- Other simple database operations to benchmark?
+    :Swapping an item from 2 tables for example. And compare with using locks too.
+- Looking back to the cache mapping for even more accurate benchmark.
+    :knowing about memory being staying in the cache or ram as it can impact the benchmark. search if atomic in C result in volatile variable.
+- I learned about a machine available at ITU that could have 128+cores, booking a slot to run the tests on ?
+    :learning it + specialized into specific image processing for instance, might not be relevant.
+- Trying to understand an opensource database to improve it with CAS ? 
+    :Tooooo long, an entiere project for this.
+- Time remaining:
+    :Progress on the report consistently. Think about explaining to Peter as he might not know.
+- Report:
+    Not too overexplaining.

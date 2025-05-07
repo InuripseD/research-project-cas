@@ -1,0 +1,8 @@
+//-----Increase a value with Lock-----//
+Time needed for one increase with Lock:           8.8 ns      0.47     33554432
+//------------------------------------//
+
+//-----Increase a value with CAS-----//
+Time needed for one increase with CAS:           10.6 ns      0.03     33554432
+//------------------------------------//
+

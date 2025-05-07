@@ -10,6 +10,8 @@ Table create_table(short isolation_mode) {
     atomic_init(table.row_count, 0);
     table.isolation_mode = isolation_mode;
     return table;
+
+    //size
 }
 
 int new_id(Table* table) {
@@ -66,7 +68,7 @@ int update_row(Table* table, int id, char new_char_value, long new_long_value) {
     return cas_try;
 }
 
-unsigned long long int update_row_char(Table* table, int id, char new_char_value) {
+int update_row_char(Table* table, int id, char new_char_value) {
     Row* row = find_row(table, id);
     if (row == NULL) {
         perror("Can't update row.");

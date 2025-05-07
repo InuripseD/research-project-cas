@@ -1,0 +1,38 @@
+//------------------------Increase a value with Lock-------------------------//
+Time needed for one increase with Lock:           8.3 ns      0.04     33554432
+//---------------------------------------------------------------------------//
+
+//--------------------------Increase a value with CAS------------------------//
+Time needed for one increase with CAS:           10.8 ns      0.00     33554432
+//---------------------------------------------------------------------------//
+
+//------------------------Increase a value with many threads using Lock----------------------//
+With  1 thread: Time needed for one increase using lock:         17.1 ns      0.02     16777216
+With  2 thread: Time needed for one increase using lock:         57.9 ns      3.95      2097152
+With  4 thread: Time needed for one increase using lock:         59.1 ns      1.52      2097152
+With  8 thread: Time needed for one increase using lock:        130.6 ns      0.50       262144
+With 16 thread: Time needed for one increase using lock:        133.5 ns      0.53       131072
+With 32 thread: Time needed for one increase using lock:        128.0 ns      0.48        65536
+With 64 thread: Time needed for one increase using lock:        125.6 ns      0.22        32768
+//-------------------------------------------------------------------------------------------//
+
+//------------------------Increase a value with many threads using CAS----------------------//
+With  1 thread: Time needed for one increase using lock:         10.1 ns      0.01     33554432
+With  2 thread: Time needed for one increase using lock:         46.1 ns      4.02      4194304
+With  4 thread: Time needed for one increase using lock:         70.7 ns      0.83      1048576
+With  8 thread: Time needed for one increase using lock:        102.5 ns      2.43       524288
+With 16 thread: Time needed for one increase using lock:        109.9 ns      1.29       262144
+With 32 thread: Time needed for one increase using lock:        112.4 ns      0.62       131072
+With 64 thread: Time needed for one increase using lock:        112.7 ns      1.01        65536
+//-------------------------------------------------------------------------------------------//
+
+//------------------------Increase a value with many threads using add_and_fetch----------------------//
+With  1 thread: Time needed for one increase using fetch_and_add:          6.4 ns      0.12     67108864
+With  2 thread: Time needed for one increase using fetch_and_add:         25.5 ns      1.13      8388608
+With  4 thread: Time needed for one increase using fetch_and_add:         28.4 ns      0.08      4194304
+With  8 thread: Time needed for one increase using fetch_and_add:         25.1 ns      0.13      2097152
+With 16 thread: Time needed for one increase using fetch_and_add:         25.1 ns      0.12      1048576
+With 32 thread: Time needed for one increase using fetch_and_add:         25.1 ns      0.04       524288
+With 64 thread: Time needed for one increase using fetch_and_add:         25.1 ns      0.04       262144
+//-------------------------------------------------------------------------------------------//
+

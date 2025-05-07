@@ -11,7 +11,7 @@
  * The table size is defined to 1000 rows. 
  * This is a fixed size table as a dynamic table would require more concurrency control. 
  */
-#define TABLE_SIZE 1000
+#define TABLE_SIZE 10000
 
 /**
  * @brief Represents a database table with rows.
@@ -132,7 +132,7 @@ int update_row(Table* table, int id, char new_char_value, long new_long_value);
  * 
  * @return The number of CAS operation tried before update, or -1 if an error occurred.
  */
-unsigned long long int update_row_char(Table* table, int id, char new_char_value);
+int update_row_char(Table* table, int id, char new_char_value);
 
 /**
  * @brief Update the long value of a row in the table.

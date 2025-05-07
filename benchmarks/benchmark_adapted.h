@@ -20,6 +20,9 @@ typedef struct {
     int information_1; // Additionnal information.
     atomic_ullong* information_2; // Additionnal information 2 in case multiple is needed.
     long information_3; // Additionnal information 3.
+    unsigned long long int information_4;
+    atomic_ullong* information_5;
+    pthread_mutex_t* lock;
 } GlobalParamsBenchmark;
 
 unsigned long long int computation_modify_row_char(void * params);
@@ -28,5 +31,10 @@ void * thread_computation_mark7(void * params);
 
 unsigned long long int thread_mark7(char *msg, PassedFunctionMark7_thread* passed_function_mark7);
 
+unsigned long long int increment_long_atomic(void * params);
+
+unsigned long long int increment_long_lock(void * params);
+
+unsigned long long int thread_mark7_inc(char *msg, PassedFunctionMark7_thread* passed_function_mark7);
 
 #endif // BENCHMARK_A_H

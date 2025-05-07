@@ -1,11 +1,9 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <limits.h>
 #include <math.h>
 
 #include "timer.h"
-#include "benchmark_classic.h"
-#include "../cas-db/table.h"
+#include "benchmark_generic.h"
 
 double mark7(char *msg, PassedFunctionMark7* passed_function) {
 
@@ -25,8 +23,8 @@ double mark7(char *msg, PassedFunctionMark7* passed_function) {
 	// For the mean and standard deviation.
 	double st = 0.0, sst = 0.0; 
 
-	double (*function)(int) = passed_function->function;
-    int int_value = passed_function->int_value;
+	double (*function)(FunctionArguments*) = passed_function->function;
+	FunctionArguments* func_args = passed_function->func_args;
 
 	do { 
 		count *= 2;
@@ -35,7 +33,8 @@ double mark7(char *msg, PassedFunctionMark7* passed_function) {
 			Timer timer;
 			play(&timer); // Start timer here.
 			for (int i=0; i<count; i++) {
-				dummy += (*function)(int_value);
+				func_args->i = i;
+				dummy += (*function)(func_args);
 			}
 			pause_timer(&timer);
 			running_time = check(&timer); // End timer here.

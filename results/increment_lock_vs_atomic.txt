@@ -1,0 +1,14 @@
+Nb_thread 1 -> Mark7 adapted: increment_long_lock               17.6 ns      0.08     16777216
+Nb_thread 1 -> Mark7 adapted: increment_long_atomic              6.4 ns      0.02     67108864
+Nb_thread 2 -> Mark7 adapted: increment_long_lock               48.5 ns      0.61      4194304
+Nb_thread 2 -> Mark7 adapted: increment_long_atomic             32.2 ns      0.68      4194304
+Nb_thread 4 -> Mark7 adapted: increment_long_lock               54.3 ns      2.69      2097152
+Nb_thread 4 -> Mark7 adapted: increment_long_atomic             29.4 ns      0.37      4194304
+Nb_thread 8 -> Mark7 adapted: increment_long_lock              116.9 ns      1.04       524288
+Nb_thread 8 -> Mark7 adapted: increment_long_atomic             18.8 ns      0.19      2097152
+Nb_thread 16 -> Mark7 adapted: increment_long_lock              113.4 ns      1.16       262144
+Nb_thread 16 -> Mark7 adapted: increment_long_atomic             26.1 ns      0.11      1048576
+Nb_thread 32 -> Mark7 adapted: increment_long_lock              115.2 ns      0.65       131072
+Nb_thread 32 -> Mark7 adapted: increment_long_atomic             23.5 ns      0.12       524288
+Nb_thread 64 -> Mark7 adapted: increment_long_lock              110.5 ns      0.68        65536
+Nb_thread 64 -> Mark7 adapted: increment_long_atomic             26.1 ns      0.04       262144

@@ -1,0 +1,1 @@
+Time needed to start a thread:                19114.6 ns    124.65        16384

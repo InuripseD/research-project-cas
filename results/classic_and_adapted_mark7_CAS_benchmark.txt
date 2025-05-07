@@ -1,0 +1,28 @@
+Nb_thread 1 -> Mark7 simple: Modify char with CAS            25122.3 ns    205.78        16384
+Retries 0.000000
+Nb_thread 2 -> Mark7 simple: Modify char with CAS            42113.4 ns    316.71         8192
+Retries 1.000000
+Nb_thread 4 -> Mark7 simple: Modify char with CAS            70269.1 ns    473.54         4096
+Retries 953.000000
+Nb_thread 8 -> Mark7 simple: Modify char with CAS           199023.0 ns   1047.51         2048
+Retries 7457.000000
+Nb_thread 16 -> Mark7 simple: Modify char with CAS           444504.0 ns   2099.47         1024
+Retries 6772.000000
+Nb_thread 32 -> Mark7 simple: Modify char with CAS           907524.5 ns   4483.23          512
+Retries 7250.000000
+Nb_thread 64 -> Mark7 simple: Modify char with CAS          1898366.3 ns  12363.14          256
+Retries 7779.000000
+Nb_thread 1 -> Mark7 adapted: Modify char with CAS              19.3 ns      0.14     16777216
+Amount of retries : 0 for 335544300 total operations. Which give 0.000000 retries per operation on average.
+Nb_thread 2 -> Mark7 adapted: Modify char with CAS              30.1 ns      0.77      4194304
+Amount of retries : 5504917 for 167772120 total operations. Which give 0.032812 retries per operation on average.
+Nb_thread 4 -> Mark7 adapted: Modify char with CAS      -54975581341.3 ns 173848052897.26      4194304
+Amount of retries : 338657221 for 335544240 total operations. Which give 1.009277 retries per operation on average.
+Nb_thread 8 -> Mark7 adapted: Modify char with CAS              86.4 ns      1.47       524288
+Amount of retries : 241543894 for 83885920 total operations. Which give 2.879433 retries per operation on average.
+Nb_thread 16 -> Mark7 adapted: Modify char with CAS              58.7 ns      0.94       524288
+Amount of retries : 358348286 for 167771840 total operations. Which give 2.135926 retries per operation on average.
+Nb_thread 32 -> Mark7 adapted: Modify char with CAS              89.1 ns      0.75       131072
+Amount of retries : 249742212 for 83885440 total operations. Which give 2.977182 retries per operation on average.
+Nb_thread 64 -> Mark7 adapted: Modify char with CAS              58.7 ns      0.27       131072
+Amount of retries : 363089326 for 167770880 total operations. Which give 2.164198 retries per operation on average.
